@@ -1,4 +1,5 @@
 import json
+import os
 from llm.groqllm import GroqLLM
 from agent.state import AgentState
 from agent.prompts import PLANNER_PROMPT
@@ -18,7 +19,9 @@ class Planner:
         final_prompt = PLANNER_PROMPT.format(
             tools=available_tools,
             history=chat_history,
-            query=state.current_query
+            query=state.current_query,
+            cwd=os.getcwd(),
+            home=os.path.expanduser("~")
         )
         
         response = self.planner_llm.generate(final_prompt)

@@ -1,4 +1,9 @@
 import os
+from tools.tool_registry import rregistry
+from llm.groqllm import GroqLLM
+from agent.prompts import SUMMERIZER_PROMPT
+
+@rregistry.register_tool()
 class CreateFileFolderTool:
     def __init__(self):
         self.name = "create file or folder"
@@ -12,6 +17,10 @@ class CreateFileFolderTool:
                 path = path.strip()
                 content = content.strip()
 
+                directory = os.path.dirname(path)
+                if directory:
+                    os.makedirs(directory, exist_ok=True)
+
                 with open(path,"w") as f:
                     f.write(content)
                 return f"File '{path}' created successfully with {len(content)} characters."
@@ -21,3 +30,34 @@ class CreateFileFolderTool:
                 return f"Folder '{path}' created successfully."
         except Exception as e:
             return f"Error creating file or folder: {str(e)}"
+
+@rregistry.register_tool()
+class SummarizeTool:
+    def __init__(self):
+        self.name = "summarize_file"
+        self.description = "Reads a file and returns a short summary of its contents. Input must be the absolute file path."
+        self.summarizer = GroqLLM()
+
+    def run(self,query:str):
+        try:
+            path = query.strip()
+            if not os.path.exists(path):
+                return f"Error: File '{path}' not found."
+            
+            if not os.path.isfile(path):
+                return f"Error: '{path}' is not a file."
+            
+            with open(path, "r") as f:
+                content = f.read()
+            
+            if len(content.strip()) == 0:
+                return f"File '{path}' is empty."
+
+            prompt = SUMMERIZER_PROMPT.format(content = content)
+            response = self.summarizer.generate(prompt)
+            return response
+        except Exception as e:
+            return f"Error summarizing file: {str(e)}"
+
+
+    
