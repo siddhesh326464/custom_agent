@@ -51,6 +51,17 @@ class ToolRegistry:
             logger.error(f"Error executing tool {tool_name}: {str(e)}")
             return f"Error executing {tool_name}: {str(e)}"
 
+    def get_tool_descriptions_for_llm(self) -> str:
+        """
+        Automatically generates the tool list for the LLM prompt.
+        """
+        descriptions = []
+        for name, tool in self.tools.items():
+            desc = getattr(tool, 'description', 'No description provided.')
+            descriptions.append(f"- {name}: {desc}")
+            
+        return "\n".join(descriptions)
+
 
 
         

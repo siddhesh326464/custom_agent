@@ -12,6 +12,10 @@ class Agent:
 
     def run(self,query):
         current_state = AgentState()
-        plan = self.planner.plan(query,state=current_state)
+        plan = self.planner.plan(query, state=current_state, memory=self.memory)
         self.executor.execute(plan, state=current_state)
+        
+        # Save conversation turn to memory
+        self.memory.add_session_memory(query, current_state.response)
+        
         return current_state.response
