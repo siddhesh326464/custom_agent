@@ -20,7 +20,7 @@ graph TD
     
     subgraph Core Agent Loop
         Main -->|1. Gets Context| Mem[(Memory)]
-        Main -->|2. Creates| State[{AgentState}]
+        Main -->|2. Creates| State[AgentState]
         Main -->|3. Plans Action| Planner[Planner]
         
         Planner -.->|Reads| Reg[Tool Registry]
