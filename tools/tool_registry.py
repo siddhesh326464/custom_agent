@@ -1,5 +1,6 @@
-from tools.calculator import CalculatorTool
-from tools.filesystem import FileSystemTool
+# from tools.calculator import CalculatorTool
+# from tools.filesystem import FileSystemTool
+# from tools.chat import ChatTool
 from typing import Dict, Any, Optional, Protocol
 import logging
 
@@ -22,14 +23,18 @@ class ToolRegistry:
     def __init__(self):
         self.tools : Dict[str,BaseTool] = {}
 
-    def register_tool(self,tool:BaseTool):
-        if not tool.name and tool.run:
-            raise ValueError("Tool {tool} must have a 'name' attribute and a 'run' method.")
-        elif tool.name in self.tools:
-            logger.warning(f"Overwriting existing tool: {tool.name}")
-        else:
-            self.tools[tool.name] = tool
-            logger.info(f"Successfully registered tool: {tool.name}")
+    def register_tool(self):
+        def wrapper(cls):
+            tool_instance = cls()
+            if not hasattr(tool_instance, 'name') or not hasattr(tool_instance, 'run'):
+                raise ValueError(f"Tool {cls.__name__} must have a 'name' attribute and a 'run' method.")
+            elif tool_instance.name in self.tools:
+                logger.warning(f"Overwriting existing tool: {tool_instance.name}")
+            else:
+                self.tools[tool_instance.name] = tool_instance
+                logger.info(f"Successfully registered tool: {tool_instance.name}")
+            return cls
+        return wrapper
 
 
     def get_tool(self,tool_name:str)->Optional[BaseTool]:
@@ -66,9 +71,6 @@ class ToolRegistry:
 
         
 rregistry = ToolRegistry()
-
-calc = CalculatorTool()
-rregistry.register_tool(calc)
         
 
 

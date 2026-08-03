@@ -1,4 +1,7 @@
 from agent.agent import Agent
+import tools.calculator
+import tools.chat
+import tools.filesystem
 
 agent = Agent()
 

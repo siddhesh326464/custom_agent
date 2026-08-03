@@ -1,3 +1,6 @@
+from tools.tool_registry import rregistry
+
+@rregistry.register_tool()
 class CalculatorTool:
     def __init__(self):
         self.name = "calculator"
