@@ -1,2 +1,5 @@
 openai
 dotenv
+qdrant-client
+sentence-transformers
+dspy-ai

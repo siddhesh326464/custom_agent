@@ -10,7 +10,7 @@ class Planner:
     def __init__(self,llm:GroqLLM):
         self.planner_llm = llm
 
-    def plan(self, user_query, state: AgentState, memory):
+    def plan(self, user_query, state: AgentState, memory, long_term_context: str = ""):
         state.current_query = user_query
         
         available_tools = rregistry.get_tool_descriptions_for_llm()
@@ -21,7 +21,8 @@ class Planner:
             history=chat_history,
             query=state.current_query,
             cwd=os.getcwd(),
-            home=os.path.expanduser("~")
+            home=os.path.expanduser("~"),
+            long_term_memory=long_term_context
         )
         
         response = self.planner_llm.generate(final_prompt)

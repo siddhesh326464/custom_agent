@@ -3,18 +3,42 @@ from agent.executor import Executor
 from agent.memory import Memory
 from llm.groqllm import GroqLLM
 from agent.state import AgentState
+from tools.tool_registry import rregistry
 
 class Agent:
     def __init__(self):
         self.planner = Planner(llm=GroqLLM())
         self.executor = Executor()
         self.memory = Memory()
+        remember_tool = rregistry.get_tool("remember fact")
+        if remember_tool:
+            remember_tool.memory = self.memory
 
-    def run(self,query):
+    def run(self, query):
         current_state = AgentState()
-        plan = self.planner.plan(query, state=current_state, memory=self.memory)
+
+        long_term_context = self.memory.recall(query=query, top_k=3)
+
+        plan = self.planner.plan(
+            query,
+            state=current_state,
+            memory=self.memory,
+            long_term_context=long_term_context
+        )
         self.executor.execute(plan, state=current_state)
-        
+
+        if plan.get("tool") == "remember fact":
+            follow_up_state = AgentState()
+            follow_up_plan = self.planner.plan(
+                query,
+                state=follow_up_state,
+                memory=self.memory,
+                long_term_context=self.memory.recall(query=query, top_k=3)
+            )
+            if follow_up_plan.get("tool") != "remember fact":
+                self.executor.execute(follow_up_plan, state=follow_up_state)
+                current_state.response = follow_up_state.response
+
         self.memory.add_session_memory(query, current_state.response)
         
         return current_state.response

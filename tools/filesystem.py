@@ -1,7 +1,8 @@
-import os
+import os,shutil
 from tools.tool_registry import rregistry
 from llm.groqllm import GroqLLM
 from agent.prompts import SUMMERIZER_PROMPT
+
 
 @rregistry.register_tool()
 class CreateFileFolderTool:
@@ -60,4 +61,32 @@ class SummarizeTool:
             return f"Error summarizing file: {str(e)}"
 
 
-    
+@rregistry.register_tool()
+class DeleteFileFolderTool:
+    def __init__(self):
+        self.name = "delete file or folder"
+        self.description = "Deletes a file or folder. Input must be the path to delete."
+
+    def run(self,query:str):
+        try:
+            path = query.strip()
+            if not os.path.exists(path):
+                return f"path not found:{path}"
+
+            confirmation  = input(f"Agent: Are you sure you want to allow this deletion? Type 'yes' to confirm {path} : ")
+            if confirmation.lower().strip() != "yes":
+                return f"Deletion of '{path}' was cancelled by the user."
+            if os.path.isfile(path):
+                os.remove(path)
+                return f"File '{path}' deleted successfully."
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+                return f"Folder '{path}' and all its contents deleted successfully."
+            else:
+                return f"Error: '{path}' is neither a standard file nor a folder."
+
+        except Exception as e:
+            return f"Error deleting file or folder: {str(e)}"
+
+            
+            

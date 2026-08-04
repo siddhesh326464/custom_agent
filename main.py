@@ -2,6 +2,7 @@ from agent.agent import Agent
 import tools.calculator
 import tools.chat
 import tools.filesystem
+import tools.memory_tools
 
 agent = Agent()
 
