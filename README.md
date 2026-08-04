@@ -34,10 +34,17 @@ graph TD
         Exec -..->|Routes to| Reg
         Exec -->|Writes Output| State
 
-        Main -->|5. If remember fact → re-plan for natural reply| Planner
+        Main -->|5. If remember fact → re-plan| Planner
         Main -->|6. Saves to session| Mem[(Session Memory\nRAM)]
     end
 
+    subgraph DSPy RL Pipeline - run once offline
+        TD[training_data.py\nLabeled Examples] --> Opt[optimize.py\nBootstrapFewShot]
+        Metric[metric.py\nScoring Function] --> Opt
+        Opt -->|scores and selects best demos| JSON[optimized_planner.json]
+    end
+
+    JSON -->|loads optimized instructions| Planner
     Reg --> Tools[[Tools:\nCalculator · FileSystem\nChat · Remember Fact]]
     LTM -..->|Injects facts into prompt| Planner
     Tools -..->|remember fact stores| LTM
