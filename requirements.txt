@@ -3,3 +3,6 @@ dotenv
 qdrant-client
 sentence-transformers
 dspy-ai
+mcp 
+feedparser
+python-telegram-bot
