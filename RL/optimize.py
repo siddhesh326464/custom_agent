@@ -33,15 +33,13 @@ class DSPyPlannerModule(dspy.Module):
 
 if __name__ == "__main__":
     program = DSPyPlannerModule()
-
-    optimizer = dspy.MIPROv2(
+    optimizer = dspy.BootstrapFewShot(
         metric=planner_metric,
-        num_threads=1,
-        verbose=True,
-        auto="light"
+        max_bootstrapped_demos=4,
+        max_labeled_demos=4,
     )
 
-    print("🚀 Starting DSPy optimization... this may take a few minutes.")
+    print("[*] Starting DSPy optimization with BootstrapFewShot...")
 
     optimized_program = optimizer.compile(
         program,
@@ -49,14 +47,17 @@ if __name__ == "__main__":
     )
 
     optimized_instructions = optimized_program.predict.signature.instructions
-    
+
     print("\n" + "="*60)
-    print("✅ OPTIMIZED INSTRUCTIONS (copy this into your PLANNER_PROMPT)")
+    print("[OK] OPTIMIZED INSTRUCTIONS")
     print("="*60)
     print(optimized_instructions)
     print("="*60)
 
+    optimized_program.save("RL/optimized_planner.json")
+
     with open("RL/optimized_instructions.txt", "w") as f:
         f.write(optimized_instructions)
-    
-    print("\n Also saved to RL/optimized_instructions.txt")
+
+    print("\n[OK] Saved to RL/optimized_instructions.txt")
+    print("[OK] Saved full program (with demos) to RL/optimized_planner.json")

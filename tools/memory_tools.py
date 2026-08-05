@@ -19,6 +19,6 @@ class RememberFactTool:
                 return "Error: Input must be in format 'key | value'"
             key, value = query.split("|", 1)
             self.memory.remember(key.strip(), value.strip())
-            return f"✅ Stored in long-term memory: '{key.strip()}' = '{value.strip()}'"
+            return f"Got it! I've remembered that your {key.strip()} is {value.strip()}."
         except Exception as e:
             return f"Error storing memory: {str(e)}"

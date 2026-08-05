@@ -27,18 +27,6 @@ class Agent:
         )
         self.executor.execute(plan, state=current_state)
 
-        if plan.get("tool") == "remember fact":
-            follow_up_state = AgentState()
-            follow_up_plan = self.planner.plan(
-                query,
-                state=follow_up_state,
-                memory=self.memory,
-                long_term_context=self.memory.recall(query=query, top_k=3)
-            )
-            if follow_up_plan.get("tool") != "remember fact":
-                self.executor.execute(follow_up_plan, state=follow_up_state)
-                current_state.response = follow_up_state.response
-
         self.memory.add_session_memory(query, current_state.response)
         
         return current_state.response

@@ -4,7 +4,7 @@ from openai import OpenAI
 import config
 
 class GroqLLM(BaseLLM):
-    def __init__(self, model_name: str = config.MODEL_NAME, temperature: float = 0.0, max_tokens: int = 100):
+    def __init__(self, model_name: str = config.MODEL_NAME, temperature: float = 0.0, max_tokens: int = 1000):
         super().__init__(model_name, temperature, max_tokens)
         self.client = OpenAI(
             api_key=config.API_KEY,

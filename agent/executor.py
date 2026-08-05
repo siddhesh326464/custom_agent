@@ -11,8 +11,7 @@ class Executor:
 
         if not tool_name:
             state.response = "Tool name not specified"
-            return {"error":"Tool name not specified"}
-            
+            return {"error":"Tool name not specified"}   
         result = rregistry.execute_tool(tool_name, query)
         state.response = result
         return {"output": result}

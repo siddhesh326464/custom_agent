@@ -1,0 +1,81 @@
+{
+  "predict": {
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "tools": "- calculator: Evaluates math expressions. Input should be a mathematical string like '2 + 2'.\n- llm: Use this tool to reply directly to the user for general conversation. Input must be your conversational response.\n- create file or folder: Creates a file or folder. Input format: 'path' to create a folder, or 'path|content' to create a file with text inside.\n- summarize_file: Reads a file and returns a short summary of its contents. Input must be the absolute file path.\n- delete file or folder: Deletes a file or folder. Input must be the path to delete.\n- remember fact: Stores an important fact or user preference into long-term memory. Use this when the user shares personal info, preferences, or important context. Input format: 'key | value'  e.g. 'user_name | Siddhesh'",
+        "history": "No previous conversation.",
+        "long_term_memory": "No long-term facts stored.",
+        "query": "my name is Siddhesh",
+        "tool": "remember fact",
+        "input": "user_name | Siddhesh"
+      },
+      {
+        "augmented": true,
+        "tools": "- calculator: Evaluates math expressions. Input should be a mathematical string like '2 + 2'.\n- llm: Use this tool to reply directly to the user for general conversation. Input must be your conversational response.\n- create file or folder: Creates a file or folder. Input format: 'path' to create a folder, or 'path|content' to create a file with text inside.\n- summarize_file: Reads a file and returns a short summary of its contents. Input must be the absolute file path.\n- delete file or folder: Deletes a file or folder. Input must be the path to delete.\n- remember fact: Stores an important fact or user preference into long-term memory. Use this when the user shares personal info, preferences, or important context. Input format: 'key | value'  e.g. 'user_name | Siddhesh'",
+        "history": "No previous conversation.",
+        "long_term_memory": "No long-term facts stored.",
+        "query": "I am 21 years old",
+        "tool": "remember fact",
+        "input": "age | 21"
+      },
+      {
+        "augmented": true,
+        "tools": "- calculator: Evaluates math expressions. Input should be a mathematical string like '2 + 2'.\n- llm: Use this tool to reply directly to the user for general conversation. Input must be your conversational response.\n- create file or folder: Creates a file or folder. Input format: 'path' to create a folder, or 'path|content' to create a file with text inside.\n- summarize_file: Reads a file and returns a short summary of its contents. Input must be the absolute file path.\n- delete file or folder: Deletes a file or folder. Input must be the path to delete.\n- remember fact: Stores an important fact or user preference into long-term memory. Use this when the user shares personal info, preferences, or important context. Input format: 'key | value'  e.g. 'user_name | Siddhesh'",
+        "history": "No previous conversation.",
+        "long_term_memory": "No long-term facts stored.",
+        "query": "I prefer dark mode",
+        "tool": "remember fact",
+        "input": "user_dark_mode | True"
+      },
+      {
+        "augmented": true,
+        "tools": "- calculator: Evaluates math expressions. Input should be a mathematical string like '2 + 2'.\n- llm: Use this tool to reply directly to the user for general conversation. Input must be your conversational response.\n- create file or folder: Creates a file or folder. Input format: 'path' to create a folder, or 'path|content' to create a file with text inside.\n- summarize_file: Reads a file and returns a short summary of its contents. Input must be the absolute file path.\n- delete file or folder: Deletes a file or folder. Input must be the path to delete.\n- remember fact: Stores an important fact or user preference into long-term memory. Use this when the user shares personal info, preferences, or important context. Input format: 'key | value'  e.g. 'user_name | Siddhesh'",
+        "history": "No previous conversation.",
+        "long_term_memory": "No long-term facts stored.",
+        "query": "I live in Pune",
+        "tool": "remember fact",
+        "input": "location | Pune"
+      }
+    ],
+    "signature": {
+      "instructions": "Plan which tool to use based on user query.",
+      "fields": [
+        {
+          "prefix": "Tools:",
+          "description": "Available tools and their descriptions"
+        },
+        {
+          "prefix": "History:",
+          "description": "Conversation history"
+        },
+        {
+          "prefix": "Long Term Memory:",
+          "description": "Relevant long-term facts"
+        },
+        {
+          "prefix": "Query:",
+          "description": "Current user query"
+        },
+        {
+          "prefix": "Tool:",
+          "description": "Tool name to use"
+        },
+        {
+          "prefix": "Input:",
+          "description": "Input to pass to the tool"
+        }
+      ]
+    },
+    "lm": null
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.3.0",
+      "cloudpickle": "3.1"
+    }
+  }
+}
